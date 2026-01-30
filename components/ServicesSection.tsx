@@ -32,15 +32,8 @@ export const ServicesSection: React.FC = () => {
 
       {/* Mobile: simple stacked cards with modest entrance animations (no stacking) */}
       <div className="md:hidden px-4 flex flex-col gap-6">
-        {SERVICES.map((service, index) => (
-          <motion.div
-            key={service.id}
-            initial={shouldRunAnimations() ? { opacity: 0, y: getEntranceOffset(), scale: 0.98 } : undefined}
-            whileInView={shouldRunAnimations() ? { opacity: 1, y: 0, scale: 1 } : undefined}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.7, delay: index * 0.12, type: 'spring', stiffness: 60, damping: 18 }}
-            className="group relative bg-white rounded-squircle p-6 shadow-squircle border border-white"
-          >
+        {SERVICES.map((service) => (
+          <div key={service.id} className="group relative bg-white rounded-squircle p-6 shadow-squircle border border-white">
             <div className="relative z-10 flex flex-col">
               <div className="w-16 h-16 bg-brand-900 rounded-3xl flex items-center justify-center text-white mb-6 shadow-xl">
                 <service.icon size={28} />
@@ -58,7 +51,7 @@ export const ServicesSection: React.FC = () => {
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div> 
 
