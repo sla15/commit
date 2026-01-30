@@ -12,9 +12,9 @@ export const ContactSection: React.FC = () => {
             <div className="col-span-1 md:col-span-2">
                 <div className="flex items-center gap-2 mb-6">
                     <img 
-                      src="/logo.png" 
+                      src="/public/favicon.png" 
                       alt="CommIT Enterprise" 
-                      className="h-12 w-auto object-contain brightness-0 invert opacity-90" 
+                      className="h-12 w-auto object-contain  opacity-90" 
                     />
                 </div>
                 <p className="text-brand-200/70 max-w-sm mb-8 leading-relaxed">

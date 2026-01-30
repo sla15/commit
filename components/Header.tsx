@@ -44,9 +44,9 @@ export const Header: React.FC = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                 <img 
-                  src="/logo.png" 
+                  src="/public/favicon.png" 
                   alt="CommIT Enterprise" 
-                  className={`h-12 w-auto object-contain transition-all duration-300 ${isTransparent ? 'brightness-0 invert' : ''}`} 
+                  className={`h-12 w-auto object-contain transition-all duration-300 `} 
                 />
             </Link>
 
