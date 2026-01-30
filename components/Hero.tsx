@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { shouldRunAnimations, markAnimationsPlayed } from '../utils/animationState';
 import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,14 @@ export const Hero: React.FC = () => {
     target: containerRef,
     offset: ["start start", "end start"]
   });
+
+  // Mark animations as played once on mount so they don't restart until reload
+  useEffect(() => {
+    if (shouldRunAnimations()) {
+      // mark immediately so repeated mounts won't replay animations
+      markAnimationsPlayed();
+    }
+  }, []);
 
   // Mouse parallax removed for static decorative visuals
 
@@ -158,8 +167,8 @@ export const Hero: React.FC = () => {
                 >
                     {/* Inner Motion Div for Floating Animation */}
                     <motion.div
-                        animate={{ y: [0, -15, 0] }}
-                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                        animate={shouldRunAnimations() ? { y: [0, -15, 0] } : undefined}
+                        transition={shouldRunAnimations() ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : undefined}
                         className="w-full h-full rounded-[3rem] overflow-hidden border border-white/10"
                     >
                         <img 
@@ -173,8 +182,8 @@ export const Hero: React.FC = () => {
                 
                 {/* Floating Card 1: Speed */}
                 <motion.div
-                    animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    animate={shouldRunAnimations() ? { y: [0, -20, 0], x: [0, 10, 0] } : undefined}
+                    transition={shouldRunAnimations() ? { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 } : undefined}
                     className="absolute top-16 -right-4 md:-right-8 lg:-right-12 bg-white/10 backdrop-blur-xl border border-white/20 p-5 rounded-2xl shadow-xl w-48 z-10"
                 >
                     <div className="flex items-center gap-3">
@@ -188,8 +197,8 @@ export const Hero: React.FC = () => {
 
                 {/* Floating Card 2: Security */}
                 <motion.div
-                    animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    animate={shouldRunAnimations() ? { y: [0, 20, 0], x: [0, -10, 0] } : undefined}
+                    transition={shouldRunAnimations() ? { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 } : undefined}
                     className="absolute bottom-16 -left-4 md:-left-8 lg:-left-12 bg-white/10 backdrop-blur-xl border border-white/20 p-5 rounded-2xl shadow-xl w-56 z-10"
                 >
                     <div className="flex items-center gap-3 mb-2">
