@@ -77,7 +77,7 @@ export const ServicesPage: React.FC = () => {
         <div>
             <ServicesHero />
 
-            <div className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[5rem] -mt-16 min-h-screen">
+            <div className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[3rem] md:rounded-t-[5rem] -mt-12 md:-mt-16 min-h-screen">
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-32 space-y-32">
                     {services.map((service, index) => {
                         const Icon = getIconComponent(service.icon_name);

@@ -61,12 +61,12 @@ export const ContactPage: React.FC = () => {
     return (
         <div>
             {/* Header Section */}
-            <section className="sticky top-0 h-[60vh] z-0 bg-brand-950 flex flex-col items-center justify-center text-center overflow-hidden pt-20">
+            <section className="relative md:sticky top-0 min-h-[70vh] md:h-[60vh] z-0 bg-brand-950 flex flex-col items-center justify-center text-center overflow-hidden pt-24 pb-32 md:pb-20">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-600/30 rounded-full blur-[120px] mix-blend-screen pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-500/20 rounded-full blur-[100px] mix-blend-screen pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
 
-                <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 w-full relative z-10 pt-10">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 w-full relative z-10">
                     <div className="max-w-4xl mx-auto">
                         <span className="text-brand-300 font-semibold tracking-wider uppercase text-sm mb-4 block">
                             Get in Touch
@@ -81,7 +81,7 @@ export const ContactPage: React.FC = () => {
                 </div>
             </section>
 
-            <Section className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[5rem] -mt-16">
+            <Section className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[3rem] md:rounded-t-[5rem] -mt-12 md:-mt-16">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
                     {/* Contact Info Card */}
                     <motion.div

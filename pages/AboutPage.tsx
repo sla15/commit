@@ -118,7 +118,7 @@ export const AboutPage: React.FC = () => {
       <AboutHero />
 
       {/* Content Wrapper (Relative to scroll over hero) */}
-      <div className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[5rem] -mt-16">
+      <div className="relative z-10 bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.15)] rounded-t-[3rem] md:rounded-t-[5rem] -mt-12 md:-mt-16">
 
         {/* Our Story */}
         <Section bg="white" className="rounded-t-[5rem]">
