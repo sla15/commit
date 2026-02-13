@@ -1,4 +1,4 @@
-import { Network, Briefcase, ShoppingCart, Users } from 'lucide-react';
+import { Network, Briefcase, ShoppingCart, Users, Shield, Award, Lightbulb, CheckCircle, HeartHandshake } from 'lucide-react';
 import { ServiceItem, ValueItem } from './types';
 
 export const COMPANY_INFO = {
@@ -37,11 +37,11 @@ export const SERVICES: ServiceItem[] = [
 ];
 
 export const VALUES: ValueItem[] = [
-  { id: 'integrity', title: "Integrity", description: "We uphold the highest standards of honesty in all our actions." },
-  { id: 'professionalism', title: "Professionalism", description: "Delivering excellence with expert knowledge and discipline." },
-  { id: 'innovation', title: "Innovation", description: "Constantly seeking new ways to solve complex problems." },
-  { id: 'accountability', title: "Accountability", description: "Taking full responsibility for our decisions and outcomes." },
-  { id: 'partnership', title: "Partnership", description: "Building strong, lasting relationships for mutual success." }
+  { id: 'integrity', title: "Integrity", description: "We uphold the highest standards of honesty in all our actions.", icon: Shield },
+  { id: 'professionalism', title: "Professionalism", description: "Delivering excellence with expert knowledge and discipline.", icon: Award },
+  { id: 'innovation', title: "Innovation", description: "Constantly seeking new ways to solve complex problems.", icon: Lightbulb },
+  { id: 'accountability', title: "Accountability", description: "Taking full responsibility for our decisions and outcomes.", icon: CheckCircle },
+  { id: 'partnership', title: "Partnership", description: "Building strong, lasting relationships for mutual success.", icon: HeartHandshake }
 ];
 
 export const CONTACT_INFO = {

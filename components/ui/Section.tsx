@@ -18,21 +18,21 @@ export const Section: React.FC<SectionProps> = ({ children, id, className = "", 
 
   const containerVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.8, 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
         ease: "easeOut",
         staggerChildren: 0.15,
         delayChildren: 0.1
-      } 
+      }
     }
   };
 
   return (
-    <section 
-      id={id} 
+    <section
+      id={id}
       className={`relative py-24 px-6 md:px-12 lg:px-24 ${overflow} ${bgStyles[bg]} ${className}`}
     >
       <div className="max-w-7xl mx-auto relative z-10">

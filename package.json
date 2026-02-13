@@ -9,12 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0",
+    "@supabase/supabase-js": "^2.95.3",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "clsx": "^2.1.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
-    "clsx": "^2.1.0",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
