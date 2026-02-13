@@ -28,7 +28,7 @@ export const AdminLayout: React.FC = () => {
     const checkSession = async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-            navigate('/admin/login');
+            navigate('/commIT/login');
         }
         setLoading(false);
     };
@@ -39,12 +39,12 @@ export const AdminLayout: React.FC = () => {
     };
 
     const menuItems = [
-        { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { path: '/admin/services', icon: Briefcase, label: 'Services' },
-        { path: '/admin/team', icon: Users, label: 'Team Members' },
-        { path: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
-        { path: '/admin/timeline', icon: History, label: 'Timeline' },
-        { path: '/admin/our-story', icon: BookOpen, label: 'Our Story' },
+        { path: '/commIT/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/commIT/services', icon: Briefcase, label: 'Services' },
+        { path: '/commIT/team', icon: Users, label: 'Team Members' },
+        { path: '/commIT/testimonials', icon: MessageSquare, label: 'Testimonials' },
+        { path: '/commIT/timeline', icon: History, label: 'Timeline' },
+        { path: '/commIT/our-story', icon: BookOpen, label: 'Our Story' },
     ];
 
     if (loading) {
@@ -71,8 +71,15 @@ export const AdminLayout: React.FC = () => {
                     }`}
             >
                 <div className="p-6 border-b border-brand-900 flex justify-between items-center">
-                    <Link to="/" className="text-xl font-bold font-display tracking-tight text-white flex items-center gap-2">
-                        <span className="text-brand-400">Comm</span>IT Admin
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <img
+                            src="/favicon.png"
+                            alt="/commit"
+                            className="h-8 w-auto object-contain"
+                        />
+                        <span className="text-xl font-bold font-display tracking-tight text-white italic">
+                            /commit
+                        </span>
                     </Link>
                     <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-brand-200 hover:text-white">
                         <X size={24} />

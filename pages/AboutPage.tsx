@@ -2,38 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Section } from '../components/ui/Section';
 import { VALUES, COMPANY_INFO } from '../constants';
 import { motion, Variants } from 'framer-motion';
-import { Linkedin, Twitter, Mail, Facebook } from 'lucide-react';
-import { supabase } from '../utils/supabaseClient';
+import { Linkedin, Twitter, Mail, Facebook, Users } from 'lucide-react';
 import { Skeleton } from '../components/ui/Skeleton';
 import { AboutHero } from '../components/AboutHero';
-
-interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  image_url: string;
-  linkedin_url?: string;
-  twitter_url?: string;
-  facebook_url?: string;
-  email?: string;
-  display_order: number;
-}
-
-interface TimelineEvent {
-  id: string;
-  year: string;
-  title: string;
-  display_order: number;
-}
-
-interface OurStory {
-  heading: string;
-  subheading: string;
-  paragraph_1: string;
-  paragraph_2: string;
-  paragraph_3: string;
-}
+import { useData } from '../context/DataContext';
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -55,59 +27,14 @@ const staggerContainer: Variants = {
 };
 
 export const AboutPage: React.FC = () => {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
-  const [ourStory, setOurStory] = useState<OurStory | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { teamMembers, timelineEvents, ourStory, loading } = useData();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [teamRes, timelineRes, storyRes] = await Promise.all([
-          supabase.from('team_members').select('*').order('display_order', { ascending: true }),
-          supabase.from('timeline_events').select('*').order('year', { ascending: true }),
-          supabase.from('our_story').select('*').single()
-        ]);
-
-        if (teamRes.error) throw teamRes.error;
-        if (timelineRes.error) throw timelineRes.error;
-
-        setTeamMembers(teamRes.data || []);
-        setTimelineEvents(timelineRes.data || []);
-        setOurStory(storyRes.data || null);
-
-      } catch (error) {
-        console.error('Error fetching about page data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   if (loading) {
     return (
-      <div className="pt-20">
-        <div className="h-[60vh] flex flex-col items-center justify-center bg-slate-50 space-y-6">
-          <Skeleton className="h-20 w-3/4 max-w-2xl" />
-          <Skeleton className="h-6 w-1/2 max-w-xl" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-40" />
-            <Skeleton className="h-12 w-3/4" />
-            <Skeleton className="h-40 w-full" />
-          </div>
-          <div className="space-y-8">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="flex gap-6">
-                <Skeleton className="w-20 h-20 rounded-2xl flex-shrink-0" />
-                <Skeleton className="h-20 w-full rounded-2xl" />
-              </div>
-            ))}
-          </div>
+      <div className="pt-20 min-h-screen bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <Skeleton className="h-[60vh] w-full rounded-[3rem]" />
         </div>
       </div>
     );
@@ -153,33 +80,35 @@ export const AboutPage: React.FC = () => {
               {/* Timeline - New Design */}
               <div className="absolute left-[3.5rem] top-8 bottom-8 w-0.5 bg-brand-100 hidden md:block" />
               <div className="space-y-10">
-                {(timelineEvents.length > 0 ? timelineEvents : [
-                  { id: '1', year: '2018', title: 'Founded with a mission to serve the public sector.', display_order: 1 },
-                  { id: '2', year: '2020', title: 'Expanded operations to include strategic consulting.', display_order: 2 },
-                  { id: '3', year: '2023', title: 'Recognized as a leading ICT provider in the region.', display_order: 3 }
-                ]).map((event, index) => (
-                  <motion.div
-                    key={event.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex flex-col md:flex-row gap-6 group relative"
-                  >
-                    <div className="flex-shrink-0 z-10 mx-auto md:mx-0">
-                      <div className="w-20 h-20 bg-brand-950 text-white rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg group-hover:scale-105 group-hover:bg-brand-600 transition-all duration-300 border-4 border-white">
-                        {event.year}
+                {timelineEvents.length > 0 ? (
+                  timelineEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex flex-col md:flex-row gap-6 group relative"
+                    >
+                      <div className="flex-shrink-0 z-10 mx-auto md:mx-0">
+                        <div className="w-20 h-20 bg-brand-950 text-white rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg group-hover:scale-105 group-hover:bg-brand-600 transition-all duration-300 border-4 border-white">
+                          {event.year}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-grow">
-                      <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow relative">
-                        {/* Arrow for desktop */}
-                        <div className="absolute top-1/2 -translate-y-1/2 -left-3 w-6 h-6 bg-white border-l border-b border-slate-100 transform rotate-45 hidden md:block"></div>
-                        <h4 className="text-lg md:text-xl font-medium text-slate-800 leading-relaxed relative z-10">{event.title}</h4>
+                      <div className="flex-grow">
+                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow relative">
+                          {/* Arrow for desktop */}
+                          <div className="absolute top-1/2 -translate-y-1/2 -left-3 w-6 h-6 bg-white border-l border-b border-slate-100 transform rotate-45 hidden md:block"></div>
+                          <h4 className="text-lg md:text-xl font-medium text-slate-800 leading-relaxed relative z-10">{event.title}</h4>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="bg-slate-50 border border-dashed border-slate-200 rounded-3xl p-12 text-center">
+                    <p className="text-slate-500 font-medium italic">Our journey continues... Updates coming soon!</p>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>
@@ -256,77 +185,87 @@ export const AboutPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
-              <div
-                key={member.id}
-                className="group w-full h-[450px] [perspective:1000px] cursor-pointer"
-                onMouseEnter={() => { if (window.matchMedia('(hover: hover)').matches) setActiveCardId(member.id); }}
-                onMouseLeave={() => { if (window.matchMedia('(hover: hover)').matches) setActiveCardId(null); }}
-                onClick={() => { if (!window.matchMedia('(hover: hover)').matches) setActiveCardId(activeCardId === member.id ? null : member.id); }}
-              >
-                <div className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] ${activeCardId === member.id ? '[transform:rotateY(180deg)]' : ''}`}>
+            {teamMembers.length > 0 ? (
+              teamMembers.map((member, index) => (
+                <div
+                  key={member.id}
+                  className="group w-full h-[450px] [perspective:1000px] cursor-pointer"
+                  onMouseEnter={() => { if (window.matchMedia('(hover: hover)').matches) setActiveCardId(member.id); }}
+                  onMouseLeave={() => { if (window.matchMedia('(hover: hover)').matches) setActiveCardId(null); }}
+                  onClick={() => { if (!window.matchMedia('(hover: hover)').matches) setActiveCardId(activeCardId === member.id ? null : member.id); }}
+                >
+                  <div className={`relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] ${activeCardId === member.id ? '[transform:rotateY(180deg)]' : ''}`}>
 
-                  {/* Front Side */}
-                  <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 bg-white">
-                    <div className="h-full flex flex-col">
-                      <div className="flex-grow relative bg-slate-200 overflow-hidden">
-                        {member.image_url ? (
-                          <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100">
-                            <span className="text-6xl font-display font-bold opacity-20">{member.name.charAt(0)}</span>
+                    {/* Front Side */}
+                    <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 bg-white">
+                      <div className="h-full flex flex-col">
+                        <div className="flex-grow relative bg-slate-200 overflow-hidden">
+                          {member.image_url ? (
+                            <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100">
+                              <span className="text-6xl font-display font-bold opacity-20">{member.name.charAt(0)}</span>
+                            </div>
+                          )}
+                          {/* Brand Overlay */}
+                          <div className="absolute inset-0 bg-brand-900/40 mix-blend-multiply"></div>
+                          {/* Gradient overlay for text readability at bottom */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+
+                          <div className="absolute bottom-0 left-0 w-full p-8 text-white">
+                            <h4 className="text-2xl font-bold mb-1">{member.name}</h4>
+                            <p className="text-brand-300 font-medium uppercase tracking-wide text-sm">{member.role}</p>
                           </div>
-                        )}
-                        {/* Brand Overlay */}
-                        <div className="absolute inset-0 bg-brand-900/40 mix-blend-multiply"></div>
-                        {/* Gradient overlay for text readability at bottom */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-
-                        <div className="absolute bottom-0 left-0 w-full p-8 text-white">
-                          <h4 className="text-2xl font-bold mb-1">{member.name}</h4>
-                          <p className="text-brand-300 font-medium uppercase tracking-wide text-sm">{member.role}</p>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Back Side */}
-                  <div className="absolute inset-0 w-full h-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-[2rem] overflow-hidden bg-brand-950 text-white p-10 flex flex-col justify-center text-center shadow-xl">
-                    <div className="w-20 h-20 mx-auto bg-brand-600 rounded-full flex items-center justify-center mb-6 text-3xl font-bold">
-                      {member.name.charAt(0)}
-                    </div>
-                    <h4 className="text-2xl font-bold mb-2">{member.name}</h4>
-                    <p className="text-brand-400 font-medium mb-6 uppercase text-sm tracking-widest">{member.role}</p>
-                    <p className="text-slate-300 leading-relaxed mb-8 text-sm line-clamp-5">
-                      {member.bio}
-                    </p>
+                    {/* Back Side */}
+                    <div className="absolute inset-0 w-full h-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-[2rem] overflow-hidden bg-brand-950 text-white p-10 flex flex-col justify-center text-center shadow-xl">
+                      <div className="w-20 h-20 mx-auto bg-brand-600 rounded-full flex items-center justify-center mb-6 text-3xl font-bold">
+                        {member.name.charAt(0)}
+                      </div>
+                      <h4 className="text-2xl font-bold mb-2">{member.name}</h4>
+                      <p className="text-brand-400 font-medium mb-6 uppercase text-sm tracking-widest">{member.role}</p>
+                      <p className="text-slate-300 leading-relaxed mb-8 text-sm line-clamp-5">
+                        {member.bio}
+                      </p>
 
-                    <div className="flex justify-center gap-4 mt-auto">
-                      {member.linkedin_url && (
-                        <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
-                          <Linkedin size={18} />
-                        </a>
-                      )}
-                      {member.twitter_url && (
-                        <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
-                          <Twitter size={18} />
-                        </a>
-                      )}
-                      {member.facebook_url && (
-                        <a href={member.facebook_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
-                          <Facebook size={18} />
-                        </a>
-                      )}
-                      {member.email && (
-                        <a href={`mailto:${member.email}`} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
-                          <Mail size={18} />
-                        </a>
-                      )}
+                      <div className="flex justify-center gap-4 mt-auto">
+                        {member.linkedin_url && (
+                          <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
+                            <Linkedin size={18} />
+                          </a>
+                        )}
+                        {member.twitter_url && (
+                          <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
+                            <Twitter size={18} />
+                          </a>
+                        )}
+                        {member.facebook_url && (
+                          <a href={member.facebook_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
+                            <Facebook size={18} />
+                          </a>
+                        )}
+                        {member.email && (
+                          <a href={`mailto:${member.email}`} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-colors">
+                            <Mail size={18} />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 bg-slate-50 border border-dashed border-slate-200 rounded-[3rem]">
+                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <Users size={32} className="text-slate-300" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">Our Team is Growing</h4>
+                <p className="text-slate-500">Profiles will be added here shortly.</p>
               </div>
-            ))}
+            )}
           </div>
         </Section>
       </div>

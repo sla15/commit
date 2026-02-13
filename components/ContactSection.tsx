@@ -51,12 +51,21 @@ export const ContactSection: React.FC = () => {
                         <h4 className="font-bold text-white mb-6 text-lg">Contact Us</h4>
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3 text-brand-200/70">
-                                <MapPin className="w-5 h-5 text-brand-500 shrink-0" />
-                                <span>{CONTACT_INFO.address}</span>
+                                <MapPin className="w-5 h-5 text-brand-500 shrink-0 mt-1" />
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT_INFO.address)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-brand-400 transition-colors"
+                                >
+                                    {CONTACT_INFO.address}
+                                </a>
                             </li>
                             <li className="flex items-center gap-3 text-brand-200/70">
                                 <Phone className="w-5 h-5 text-brand-500 shrink-0" />
-                                <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-brand-400 transition-colors">{CONTACT_INFO.phone}</a>
+                                <a href={`tel:${CONTACT_INFO.phone.replace(/\s+/g, '')}`} className="hover:text-brand-400 transition-colors">
+                                    {CONTACT_INFO.phone}
+                                </a>
                             </li>
                             <li className="flex items-center gap-3 text-brand-200/70">
                                 <Mail className="w-5 h-5 text-brand-500 shrink-0" />
